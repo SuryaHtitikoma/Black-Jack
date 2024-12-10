@@ -1,42 +1,40 @@
 #include <iostream>
-#include <vector>
 #include <string>
-#include <ctime>
 #include <cstdlib>
+#include <ctime>
 
 using namespace std;
 
-int main() {
-    string suits[] = {"Hearts", "Diamonds", "Clubs", "Spades"};
-    string ranks[] = {"2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King", "Ace"};
-    string deck[52];
+void generate_kartu(string cards[]) {
+    string lambang[] = {"Waru", "Hati", "Wajik", "Keriting"};
+    string angka[] = {"As", "Dua", "Tiga", "Empat", "Lima", "Enam", "Tujuh", "Delapan", "Sembilan", "Sepuluh", "Jack", "Queen", "King"};
 
-    int index = 0;
-    for (int i = 0; i < 4; ++i) {
-        for (int j = 0; j < 13; ++j) {
-            deck[index++] = ranks[j] + " of " + suits[i];
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 13; j++) {
+            cards[i * 13 + j] = angka[j] + " " + lambang[i];
         }
     }
+}
 
+void shuffle_kartu(string cards[], int n) {
     srand(time(0));
-    for (int i = 0; i < 52; ++i) {
-        int randomIndex = rand() % 52;
-        string temp = deck[i];
-        deck[i] = deck[randomIndex];
-        deck[randomIndex] = temp;
-        cout << deck[randomIndex] << endl;
+    for (int i = n - 1; i > 0; i--) {
+        int j = rand() % (i + 1);
+        string temp = cards[i];
+        cards[i] = cards[j];
+        cards[j] = temp;
     }
+}
 
-    string selectedCard = deck[rand() % 52];
+int main() {
+    const int total_kartu = 52;
+    string cards[total_kartu];
 
-    cout << "Tebak kartu (format: 'Rank of Suit', contoh: 'Ace of Spades'): ";
-    string userGuess;
-    getline(cin, userGuess);
+    generate_kartu(cards);
+    shuffle_kartu(cards, total_kartu);
 
-    if (userGuess == selectedCard) {
-        cout << "Tebakanmu benar! Kartunya adalah " << selectedCard << "." << endl;
-    } else {
-        cout << "Tebakanmu salah. Kartunya adalah " << selectedCard << "." << endl;
+    for (int i = 0; i < total_kartu; i++) {
+        cout << cards[i] << endl;
     }
 
     return 0;
